@@ -14,10 +14,14 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
-      - uses: android-actions/setup-android@v3
-      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
-      - uses: gradle/actions/setup-gradle@v4
-      - run: gradle assembleDebug --no-daemon
+      - uses: subosito/flutter-action@v2
+        continue-on-error: true
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Build with Gradle
+        run: gradle assembleDebug --no-daemon
+        env:
+          ANDROID_HOME: /usr/local/lib/android/sdk
       - uses: actions/upload-artifact@v4
         with:
           name: MCX-Beta1-Full-APK
